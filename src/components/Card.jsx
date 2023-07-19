@@ -1,8 +1,10 @@
 import React, { useState,useRef, useEffect } from "react";
 import { useDispatchCart,useCart } from "./ContextReducer";
+import { useNavigate } from "react-router-dom";
 export default function Card(props) {
  let dispatch=useDispatchCart();
  let data=useCart();
+ let navigate=useNavigate();
  const priceRef=useRef()
   let options=props.options;
   let priceOptions=Object.keys(options)
@@ -11,9 +13,30 @@ export default function Card(props) {
   const[size,setSize]=useState("");
 
   const handleAddToCart=async()=>{
+    let food=[]
+    for (const item of data){
+      if(item.id==props.foodItem._id){
+        food=item
+        break;
+      }
+
+    }
+    if(food!==[]){
+      if(food.size==size){
+        await dispatch({type:"UPDATE",id:props.foodItem._id,qty:qty,price:finalPrice})
+      
+        return;
+
+      }
+    else if((food.size)!==size){
     await dispatch({type:"ADD",id:props.foodItem._id,name:props.foodItem.name,price:finalPrice,qty:qty,size:size})
-    console.log(data)
+    return
+   // console.log(data)
+    }
+    return
   }
+    await dispatch({type:"ADD",id:props.foodItem._id,name:props.foodItem.name,price:finalPrice,qty:qty,size:size})
+  }  
   let finalPrice=qty*parseInt(options[size])
   useEffect(()=>{
     setSize(priceRef.current.value)
