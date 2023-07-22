@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Card from "./Card";
-import Carousal from "./Carousal";
+
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -20,7 +20,8 @@ export default function Home() {
     response = await response.json();
     setFoodItem(response[0]);
     setFoodCat(response[1]);
-    // console.log(response[0],response[1])
+    console.log(response[0],response[1])
+   
   };
 
   useEffect(() => {
@@ -111,6 +112,7 @@ export default function Home() {
 
       <div className="container">
         {
+        
           foodCat!==[]
           ?foodCat.map((data) => {
             return(
@@ -120,12 +122,13 @@ export default function Home() {
             </div>
             <hr/>
             {foodItem !==[]
-            ?foodItem.filter((item)=>(item.CategoryName===data.CategoryName) && (item.name.toLowerCase().includes(search.toLocaleLowerCase()))).map(filterItems=>{
+            ?foodItem.filter((item)=>(item.CategoryName===data.CategoryName) && (item.name.toLowerCase().includes(search.toLowerCase()))).map(filterItems=>{
               return(
-                  <div key={filterItems._id} className="col-12 col-md-6 col-lg-3">
+                  <div key={filterItems._id} className="col-12 col-md-6 col-lg-3 ">
                     <Card  
                     foodItem={filterItems}
                     options={filterItems.options[0]} 
+                   
                     ></Card>
                   </div>
               )
